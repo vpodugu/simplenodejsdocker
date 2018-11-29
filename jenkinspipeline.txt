@@ -1,0 +1,32 @@
+
+node {
+
+/* Modify as required */  
+
+    stage("from source repository") {
+        git 'https://github.com/vpodugu/simplenodejsdocker.git'
+    }
+    stage("build docker image") {
+        echo "Build Docker Image"
+        sh 'docker build  -t venkatlearn/webapp-nodejs:0.0.1 .' 
+    }
+    stage("push docker Image to dockerhub") {
+        echo "Push Docker Image to Hub"
+        sh 'docker login -u venkatlearn -p ****** '
+        sh 'docker push venkatlearn/webapp-nodejs:0.0.1'
+    }
+    
+    stage("Launch app in another ec2 instance") {
+
+        def dockerCommand="docker run --name my-webapp-1 -p 49001:8082 -d  venkatlearn/webapp-nodejs:0.0.1"
+
+	/* my-ec2-WebInstance has the private key of this ec2 instance. This can be added using 
+		"Pipeline Syntax" -> sshagent -> Add -> Jenkins Credentials Provider: Jenkins " */
+
+        sshagent(['my-ec2-WebInstance']) {
+            sh "ssh -o StrictHostKeyChecking=no ec2-user@**************.amazonaws.com ${dockerCommand}"
+        }
+
+    }
+    
+}

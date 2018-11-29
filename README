@@ -20,3 +20,24 @@ docker run --name nodejs4 -p 49004:8082 -d mynodejsapp
 
 5. If you want to change default port 8082
 	+ Modify in server.js
+
+To test this using Jenkins Flow
+================================
+
++ Create 2 EC2 Instances
+
+1. EC2 with docker
+   a) yum update -y
+   b) amazon-linux-extras install docker
+   c) systemctl restart docker
+   d) update security group with incoming ports mentioned in jenkinspipeline.txt Ex: 49001
+
+2. EC2 with Jenkins + Docker
+   a) sudo usermod -a -G docker jenkins
+   b) restart jenkins
+   c) build jenkins pipeline. refer to jenkinspipeline.txt
+   d) run the build
+ 
+3. Verify in 1st EC2 Instance
+   a) docker ps
+
