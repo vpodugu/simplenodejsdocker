@@ -1,0 +1,22 @@
+A Sample Web App created using NodeJS to test in Docker Container.
+
+1. Get the Source
+
+2. Build using docker
+
+docker build -t mynodejsapp .
+
+3. Launch multiple instance
+
+docker run --name nodejs1 -p 49001:8082 -d mynodejsapp
+docker run --name nodejs2 -p 49002:8082 -d mynodejsapp
+docker run --name nodejs3 -p 49003:8082 -d mynodejsapp
+docker run --name nodejs4 -p 49004:8082 -d mynodejsapp
+
+4. If you are using EC2 Instance
+	+ Go to Security Group associated
+	+ Add 49001-49004 as inbound rules ( TCP )
+
+
+5. If you want to change default port 8082
+	+ Modify in server.js
